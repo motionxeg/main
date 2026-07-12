@@ -196,40 +196,169 @@
                 visibility: visible !important;
             }
         }
-    /* Mobile improvements */
-    @media (max-width: 768px) {
-        /* Allow normal document flow on small screens so body/html handle scrolling */
-        body { display: block; }
-        .overflow-x-auto { -webkit-overflow-scrolling: touch; }
-        .tab-content { padding-bottom: 1rem; }
-        #mobile-bottom-nav { padding-bottom: env(safe-area-inset-bottom); }
-        /* mobile typography and text-flow improvements */
-        body { font-size: 14px; line-height: 1.45; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        /* prevent Arabic words from being broken into letters on small screens */
-        [dir="rtl"] table th, [dir="rtl"] table td, [dir="rtl"] .overflow-x-auto, [dir="rtl"] .tab-content { word-break: keep-all; hyphens: none; }
-        input, select, button, textarea { font-family: inherit; font-size: 13px; }
-    }
-
     /* Mobile drawer (hidden by default, slides in) */
     #mobile-drawer { transition: transform 250ms ease-in-out; }
     #mobile-drawer.open { transform: translateX(0) !important; }
-    @media (max-width: 768px) {
-        /* Prevent table headers/values from collapsing into vertical single-letters by forcing horizontal scroll */
-        .overflow-x-auto table, .overflow-x-auto thead, .overflow-x-auto tbody, .overflow-x-auto tr { white-space: nowrap; }
-        .overflow-x-auto th, .overflow-x-auto td { white-space: nowrap; overflow: visible; }
-        /* increase bottom padding so mobile bottom nav doesn't cover content */
-        main { padding-bottom: 110px; }
-        /* hide large watermark on small screens */
-        .watermark { display: none !important; }
-        /* make mobile drawer full height and comfortable width */
-        #mobile-drawer { width: 86%; transform: translateX(-100%); }
-        #mobile-drawer.open { transform: translateX(0); }
-        /* ensure bottom nav fits */
-        #mobile-bottom-nav > div { max-width: calc(100vw - 24px); }
-        /* increase table cell padding on mobile for readability */
-        .overflow-x-auto td, .overflow-x-auto th { padding: 12px !important; }
-        /* ensure horizontal writing and normal text flow */
-        .overflow-x-auto th, .overflow-x-auto td { writing-mode: horizontal-tb !important; transform: none !important; display: table-cell !important; }
+
+    /* Native-app mobile layout: applies only below 768px, desktop remains untouched */
+    @media (max-width: 767px) {
+        body {
+            display: block;
+            font-size: 14px;
+            line-height: 1.45;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        #main-content {
+            margin: 0 !important;
+            width: 100% !important;
+        }
+
+        main {
+            width: 100% !important;
+            padding: 0.75rem !important;
+            padding-bottom: calc(110px + env(safe-area-inset-bottom)) !important;
+        }
+
+        .tab-content,
+        .tab-content.active {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: block;
+        }
+
+        /* Remove desktop-like card/grid behavior on mobile */
+        .tab-content .grid,
+        .tab-content [class*="grid-cols-"],
+        .tab-content [class*="col-span-"] {
+            display: block !important;
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
+        }
+
+        .tab-content > div,
+        .tab-content section,
+        .tab-content article,
+        .tab-content .rounded-2xl,
+        .tab-content .rounded-xl {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        .tab-content .rounded-2xl,
+        .tab-content .rounded-xl,
+        .tab-content .p-6,
+        .tab-content .p-5,
+        .tab-content .p-4 {
+            padding: 0.75rem !important;
+        }
+
+        .tab-content .space-y-6 > :not([hidden]) ~ :not([hidden]),
+        .tab-content .space-y-4 > :not([hidden]) ~ :not([hidden]),
+        .tab-content .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0.75rem !important;
+        }
+
+        /* One-column forms and full-width controls */
+        .tab-content form {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+        }
+
+        .tab-content form .grid,
+        .tab-content form [class*="grid-cols-"],
+        .tab-content form [class*="col-span-"] {
+            display: block !important;
+            grid-template-columns: 1fr !important;
+            gap: 0.5rem !important;
+        }
+
+        .tab-content input,
+        .tab-content select,
+        .tab-content textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+            font-size: 14px !important;
+        }
+
+        /* Full-width buttons in pages/forms */
+        .tab-content button,
+        .tab-content a.inline-flex {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+
+        /* Keep table actions usable while still full width row behavior */
+        .tab-content td button,
+        .tab-content td a.inline-flex {
+            margin-top: 0.35rem;
+        }
+
+        /* Full-width tables with horizontal scrolling */
+        .tab-content .overflow-x-auto {
+            width: 100% !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.15rem;
+        }
+
+        .tab-content .overflow-x-auto table {
+            width: 100% !important;
+            min-width: 680px;
+            border-collapse: collapse;
+        }
+
+        .tab-content .overflow-x-auto thead,
+        .tab-content .overflow-x-auto tbody,
+        .tab-content .overflow-x-auto tr,
+        .tab-content .overflow-x-auto th,
+        .tab-content .overflow-x-auto td {
+            white-space: nowrap;
+            writing-mode: horizontal-tb !important;
+            transform: none !important;
+        }
+
+        .tab-content .overflow-x-auto th,
+        .tab-content .overflow-x-auto td {
+            padding: 10px !important;
+        }
+
+        [dir="rtl"] .tab-content,
+        [dir="rtl"] .tab-content .overflow-x-auto,
+        [dir="rtl"] .tab-content th,
+        [dir="rtl"] .tab-content td {
+            word-break: keep-all;
+            hyphens: none;
+        }
+
+        /* Mobile chrome adjustments */
+        .watermark {
+            display: none !important;
+        }
+
+        #mobile-drawer {
+            width: 86%;
+            transform: translateX(-100%);
+        }
+
+        #mobile-drawer.open {
+            transform: translateX(0);
+        }
+
+        #mobile-bottom-nav {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        #mobile-bottom-nav > div {
+            max-width: calc(100vw - 12px);
+        }
     }
     </style>
 </head>
